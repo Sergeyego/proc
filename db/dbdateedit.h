@@ -38,6 +38,7 @@ public slots:
 
 private slots:
     void txtChangeSlot(QString txt);
+    void shVid();
 };
 
 #endif // DBDATEEDIT_H

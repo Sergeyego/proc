@@ -169,10 +169,10 @@ void FormGraph::setCurrentProc(int index)
     double sec=plot->canvasMap(QwtPlot::xBottom).s2();
 
     QString vr=(ui->checkBoxOst->isChecked()) ? secToStr(sec) : tp;
-    QString title=own+tr(", ")+mark+tr(", п.")+part+tr(", замес ")+zms+tr(", ")+"<br>"+
+    QString title="<FONT SIZE=2>"+own+tr(", ")+mark+tr(", п.")+part+tr(", замес ")+zms+tr(", ")+"<br>"+
                     kvo+tr("кг, w0=")+wl+tr(", t0=")+tl+",<br>"+
-                    begTime.toString("dd.MM.yy hh:mm:ss")+" - "+endTime.toString("dd.MM.yy hh:mm:ss")+" ("+vr+")";
-    title+=getSensorInfo(id_own,begTime.date());
+                    begTime.toString("dd.MM.yy hh:mm:ss")+" - "+endTime.toString("dd.MM.yy hh:mm:ss")+" ("+vr+")"+"</FONT>";
+    title+="<FONT SIZE=1>"+getSensorInfo(id_own,begTime.date())+"</FONT>";;
     plot->setTitle(title);
 }
 
@@ -182,8 +182,8 @@ void FormGraph::setCurrentOven(QModelIndex index)
     QString nam=ui->tableViewOven->model()->data(ui->tableViewOven->model()->index(index.row(),1),Qt::DisplayRole).toString();
     plot->setbaseTime(ui->dateTimeEditBeg->dateTime());
     plotData->refresh(ui->dateTimeEditBeg->dateTime(),ui->dateTimeEditEnd->dateTime(), id_oven);
-    plot->setTitle(nam+"<br>"+ui->dateTimeEditBeg->dateTime().toString("dd.MM.yy hh:mm:ss")+
-                   " - "+ui->dateTimeEditEnd->dateTime().toString("dd.MM.yy hh:mm:ss")+getSensorInfo(id_oven,ui->dateTimeEditBeg->dateTime().date()));
+    plot->setTitle("<FONT SIZE=2>"+nam+"<br>"+ui->dateTimeEditBeg->dateTime().toString("dd.MM.yy hh:mm:ss")+
+                   " - "+ui->dateTimeEditEnd->dateTime().toString("dd.MM.yy hh:mm:ss")+"</FONT><FONT SIZE=1>"+getSensorInfo(id_oven,ui->dateTimeEditBeg->dateTime().date())+"</FONT>");
 }
 
 void FormGraph::updOven()

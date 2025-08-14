@@ -44,6 +44,11 @@ QWidget *DbDelegate::createEditor (QWidget * parent, const QStyleOptionViewItem 
             editor= new DbDateEdit(parent);
             break;
         }
+        case QVariant::DateTime:
+        {
+            editor= new DbDateTimeEdit(parent);
+            break;
+        }
         default:
         {
             editor=QItemDelegate::createEditor(parent, option, index);
@@ -96,6 +101,7 @@ void DbDelegate::setEditorData ( QWidget * editor, const QModelIndex & index ) c
                 if (dat.isNull()){
                     dateTimeEdit->setDateTime(dateTimeEdit->minimumDateTime());
                 } else {
+                    dateTimeEdit->setTimeZone(QTimeZone::UTC);
                     dateTimeEdit->setDateTime(dat.toDateTime());
                 }
                 return;

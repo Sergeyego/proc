@@ -42,9 +42,15 @@ void CustomCalendarWidget::showEvent(QShowEvent *event)
 
 DbDateTimeEdit::DbDateTimeEdit(QWidget *parent) : QDateTimeEdit(parent)
 {
+    this->setCalendarPopup(true);
+    CustomCalendarWidget * pCW = new CustomCalendarWidget(this);
+    pCW->setFirstDayOfWeek( Qt::Monday );
+    this->setCalendarWidget( pCW );
     this->setDisplayFormat("dd.MM.yyyy hh:mm");
     this->setSpecialValueText("NULL");
+
     connect(this->lineEdit(),SIGNAL(textChanged(QString)),this,SLOT(txtChangeSlot(QString)));
+    connect(pCW,SIGNAL(shown()),this,SLOT(shVid()));
 }
 
 void DbDateTimeEdit::setDateTime(const QDateTime &dateTime)
@@ -64,5 +70,12 @@ void DbDateTimeEdit::txtChangeSlot(QString txt)
 {
     if (txt.isEmpty()){
         this->setDateTime(this->minimumDateTime());
+    }
+}
+
+void DbDateTimeEdit::shVid()
+{
+    if (QDateTimeEdit::dateTime()==this->minimumDateTime()){
+        this->setDateTime(QDateTime::currentDateTime());
     }
 }
