@@ -2,12 +2,16 @@
 #define FORMGRAPH_H
 
 #include <QWidget>
+#include <QPrinter>
+#include <QPrintDialog>
 #include "cfgplot.h"
 #include "db/dbtablemodel.h"
 #include "rels.h"
 #include "db/dbmapper.h"
 #include "plotdata.h"
 #include "qwt/qwt_scale_map.h"
+#include "qwt/qwt_plot_renderer.h"
+#include "modelro.h"
 
 namespace Ui {
 class FormGraph;
@@ -44,11 +48,15 @@ private:
     void saveSettings();
     QString secToStr(qint64 sec);
     QString getSensorInfo(int id_owen, QDate date);
+    ModelRo *modelOven;
 
 private slots:
     void updDry();
     void updGraph();
     void setCurrentProc(int index);
+    void setCurrentOven(QModelIndex index);
+    void updOven();
+    void printGraph();
 };
 
 #endif // FORMGRAPH_H

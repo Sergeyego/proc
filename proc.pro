@@ -25,6 +25,7 @@ SOURCES += \
     formgraph.cpp \
     main.cpp \
     mainwindow.cpp \
+    modelro.cpp \
     olap/axiswidget.cpp \
     olap/cubewidget.cpp \
     olap/cubic.cpp \
@@ -172,6 +173,7 @@ HEADERS += \
     db/tablemodel.h \
     formgraph.h \
     mainwindow.h \
+    modelro.h \
     olap/axiswidget.h \
     olap/cubewidget.h \
     olap/cubic.h \

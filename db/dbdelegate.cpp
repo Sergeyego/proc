@@ -90,6 +90,17 @@ void DbDelegate::setEditorData ( QWidget * editor, const QModelIndex & index ) c
                 return;
             }
         }
+        if (sqlModel->columnType(index.column()==QMetaType::QDateTime)){
+            DbDateTimeEdit *dateTimeEdit = qobject_cast<DbDateTimeEdit *>(editor);
+            if (dateTimeEdit){
+                if (dat.isNull()){
+                    dateTimeEdit->setDateTime(dateTimeEdit->minimumDateTime());
+                } else {
+                    dateTimeEdit->setDateTime(dat.toDateTime());
+                }
+                return;
+            }
+        }
         QLineEdit *line = qobject_cast<QLineEdit *>(editor);
         if (line) {
             if (sqlModel->validator(index.column())){
@@ -152,6 +163,17 @@ void DbDelegate::setModelData ( QWidget * editor, QAbstractItemModel * model, co
                         sqlModel->setData(index,sqlModel->nullVal(index.column()),Qt::EditRole);
                     } else {
                         sqlModel->setData(index,dateEdit->date(),Qt::EditRole);
+                    }
+                    return;
+                }
+            }
+            if (sqlModel->columnType(index.column())==QVariant::DateTime){
+                DbDateTimeEdit *dateTimeEdit = qobject_cast<DbDateTimeEdit *>(editor);
+                if (dateTimeEdit){
+                    if (dateTimeEdit->dateTime()==dateTimeEdit->minimumDateTime()){
+                        sqlModel->setData(index,sqlModel->nullVal(index.column()),Qt::EditRole);
+                    } else {
+                        sqlModel->setData(index,dateTimeEdit->dateTime(),Qt::EditRole);
                     }
                     return;
                 }

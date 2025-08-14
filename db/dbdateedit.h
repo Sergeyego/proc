@@ -26,4 +26,18 @@ private slots:
     void shVid();
 };
 
+class DbDateTimeEdit : public QDateTimeEdit
+{
+    Q_OBJECT
+public:
+    DbDateTimeEdit(QWidget *parent = nullptr);
+
+public slots:
+    void setDateTime(const QDateTime &dateTime);
+    void clear();
+
+private slots:
+    void txtChangeSlot(QString txt);
+};
+
 #endif // DBDATEEDIT_H

@@ -14,10 +14,13 @@ FormGraph::FormGraph(QWidget *parent)
     ui->verticalLayoutCfg->addWidget(cfgPlot);
 
     plotData = new PlotData(plot,this);
-    ui->verticalLayoutChn->addWidget(plotData);
+    ui->verticalLayoutChn->insertWidget(0,plotData);
 
     ui->dateEditBeg->setDate(QDate::currentDate().addDays(-QDate::currentDate().day()+1));
     ui->dateEditEnd->setDate(QDate::currentDate().addDays(1));
+
+    ui->dateTimeEditBeg->setDateTime(QDateTime::currentDateTime().addDays(-3));
+    ui->dateTimeEditEnd->setDateTime(QDateTime::currentDateTime().addDays(1));
 
     modelDry = new ModelDry(this);
     modelDry->setInsertable(false);
@@ -49,11 +52,18 @@ FormGraph::FormGraph(QWidget *parent)
 
     ui->horizontalLayoutMap->insertWidget(0,mapper);
 
+    modelOven = new ModelRo(this);
+    ui->tableViewOven->setModel(modelOven);
+    updOven();
+
     connect(mapper,SIGNAL(currentIndexChanged(int)),this,SLOT(setCurrentProc(int)));
     connect(ui->pushButtonUpdDry,SIGNAL(clicked(bool)),this,SLOT(updDry()));
     connect(ui->checkBoxMonly,SIGNAL(clicked(bool)),this,SLOT(updDry()));
     connect(ui->tableViewDry->horizontalHeader(),SIGNAL(sectionClicked(int)),modelDry,SLOT(srt(int)));
     connect(ui->checkBoxOst,SIGNAL(clicked(bool)),this,SLOT(updGraph()));
+    connect(ui->tableViewOven->selectionModel(),SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),this,SLOT(setCurrentOven(QModelIndex)));
+    connect(ui->pushButtonOven,SIGNAL(clicked(bool)),this,SLOT(updOven()));
+    connect(ui->pushButtonPrint,SIGNAL(clicked(bool)),this,SLOT(printGraph()));
 
     loadSettings();
     updDry();
@@ -159,11 +169,59 @@ void FormGraph::setCurrentProc(int index)
     double sec=plot->canvasMap(QwtPlot::xBottom).s2();
 
     QString vr=(ui->checkBoxOst->isChecked()) ? secToStr(sec) : tp;
-    QString title="<FONT SIZE=2>"+own+tr(", ")+mark+tr(", п.")+part+tr(", замес ")+zms+tr(", ")+"<br>"+
+    QString title=own+tr(", ")+mark+tr(", п.")+part+tr(", замес ")+zms+tr(", ")+"<br>"+
                     kvo+tr("кг, w0=")+wl+tr(", t0=")+tl+",<br>"+
-                    begTime.toString("dd.MM.yy hh:mm:ss")+" - "+endTime.toString("dd.MM.yy hh:mm:ss")+" ("+vr+")"+"</FONT>";
-    title+="<FONT SIZE=1>"+getSensorInfo(id_own,begTime.date())+"</FONT>";
+                    begTime.toString("dd.MM.yy hh:mm:ss")+" - "+endTime.toString("dd.MM.yy hh:mm:ss")+" ("+vr+")";
+    title+=getSensorInfo(id_own,begTime.date());
     plot->setTitle(title);
+}
+
+void FormGraph::setCurrentOven(QModelIndex index)
+{
+    int id_oven=ui->tableViewOven->model()->data(ui->tableViewOven->model()->index(index.row(),0),Qt::EditRole).toInt();
+    QString nam=ui->tableViewOven->model()->data(ui->tableViewOven->model()->index(index.row(),1),Qt::DisplayRole).toString();
+    plot->setbaseTime(ui->dateTimeEditBeg->dateTime());
+    plotData->refresh(ui->dateTimeEditBeg->dateTime(),ui->dateTimeEditEnd->dateTime(), id_oven);
+    plot->setTitle(nam+"<br>"+ui->dateTimeEditBeg->dateTime().toString("dd.MM.yy hh:mm:ss")+
+                   " - "+ui->dateTimeEditEnd->dateTime().toString("dd.MM.yy hh:mm:ss")+getSensorInfo(id_oven,ui->dateTimeEditBeg->dateTime().date()));
+}
+
+void FormGraph::updOven()
+{
+    int saveInd=ui->tableViewOven->currentIndex().row();
+    QSqlQuery query;
+    query.prepare("select o.id, o.num, g.nam, o.pwr||'+'||o.pwr_cool||' kW' from owens as o "
+                  "inner join owens_groups as g on o.id_group=g.id "
+                  "order by o.num");
+    if (modelOven->execQuery(query)){
+        modelOven->setHeaderData(1,Qt::Horizontal,tr("Номер"));
+        modelOven->setHeaderData(2,Qt::Horizontal,tr("Группа"));
+        modelOven->setHeaderData(3,Qt::Horizontal,tr("Мощность"));
+        ui->tableViewOven->setColumnHidden(0,true);
+        ui->tableViewOven->resizeToContents();
+    }
+    if (sender()==ui->pushButtonOven && saveInd>0 && saveInd<modelOven->rowCount()){
+        ui->tableViewOven->selectRow(saveInd);
+    }
+}
+
+void FormGraph::printGraph()
+{
+    QwtPlotRenderer renderer;
+    renderer.setDiscardFlag( QwtPlotRenderer::DiscardBackground );
+    renderer.setDiscardFlag( QwtPlotRenderer::DiscardCanvasBackground );
+    renderer.setDiscardFlag( QwtPlotRenderer::DiscardCanvasFrame );
+    renderer.setLayoutFlag( QwtPlotRenderer::FrameWithScales );
+    QPrinter printer;
+    printer.setColorMode(QPrinter::Color);
+    QPrintDialog dialog(&printer,this);
+    if (dialog.exec()){
+        QPainter painter(&printer);
+        QRectF page = printer.pageRect(QPrinter::DevicePixel);
+        int w = page.width()-page.x();
+        QRect rect(page.x(), page.y(), w*0.95, w*1.3);
+        renderer.render(plot,&painter,rect);
+    }
 }
 
 ModelDry::ModelDry(QObject *parent) : DbTableModel("owens_rab", parent)

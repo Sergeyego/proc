@@ -6,10 +6,8 @@ SrcPlot::SrcPlot(Plot *p, const QString nam, QColor color, bool checked, QWidget
     this->setLayout(new QHBoxLayout);
     chb = new QCheckBox(nam,this);
     chb->setChecked(checked);
-    btn = new QPushButton(tr("—"),this);
-    btn->setMaximumSize(40,20);
-    QFont font("Times", 25, QFont::Bold);
-    btn->setFont(font);
+    btn = new QPushButton(this);
+    btn->setMaximumSize(20,20);
     layout()->addWidget(chb);
     layout()->addWidget(btn);
     curve = new QwtPlotCurve();
@@ -45,12 +43,10 @@ void SrcPlot::plotData()
 
 void SrcPlot::setCurveColor(QColor color)
 {
-    QPalette tpalette = btn->palette();
-    tpalette.setColor(QPalette::ButtonText,color);
+    btn->setStyleSheet("background-color:"+color.name());
     QPen pen=curve->pen();
     pen.setWidth(2);
     pen.setColor(color);
-    btn->setPalette(tpalette);
     curve->setPen(pen);
     curve->plot()->replot();
 }

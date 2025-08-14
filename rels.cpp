@@ -11,13 +11,13 @@ Rels *Rels::instance()
 
 Rels::Rels(QObject *parent) : QObject(parent)
 {
-    relOwen = new DbSqlRelation("owens","id","num",this);// QString("select id, num from owens order by num"),0,1,this);
+    relOwen = new DbSqlRelation("owens","id","num",this);
     relOwen->setSort("num");
-    relElDim = new DbSqlRelation("dry_els","ide","fnam",this);// QString("select ide, fnam from dry_els order by fnam"),0,1,this);
+    relElDim = new DbSqlRelation("dry_els","ide","fnam",this);
     relElDim->setSort("fnam");
-    relRab = new DbSqlRelation("rab_rab","id","snam",this);//QString("select id, snam from rab_rab order by snam"),0,1,this);
+    relRab = new DbSqlRelation("rab_rab","id","snam",this);
     relRab->setSort("snam");
-    relProg = new DbSqlRelation("dry_reg","id","nam",this);//QString("select id, nam from dry_reg order by nam"),0,1,this);
+    relProg = new DbSqlRelation("dry_reg","id","nam",this);
     relProg->setSort("nam");
 }
 

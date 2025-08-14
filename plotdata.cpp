@@ -51,8 +51,8 @@ void PlotData::refresh(int id_owrab, bool new_format, bool ost)
             QMessageBox::critical(this,"Error",query.lastError().text(),QMessageBox::Ok);
         }
     } else {
-        srcData.push_back(new SrcChannel(tr("Канал 1"),Qt::black,Qt::red,this));
-        srcData.push_back(new SrcChannel(tr("Канал 2"),Qt::green,Qt::blue,this));
+        srcData.push_back(new SrcChannel(plot, tr("Канал 1"),Qt::black,Qt::red,this));
+        srcData.push_back(new SrcChannel(plot, tr("Канал 2"),Qt::green,Qt::blue,this));
         foreach (SrcChannel *s, srcData) {
            this->layout()->addWidget(s);
         }
@@ -103,7 +103,7 @@ void PlotData::refresh(QDateTime dBeg, QDateTime dEnd, int id_oven)
     query.bindValue(":d2",dEnd);
     if (query.exec()){
         while (query.next()){
-            srcData.push_back(new SrcChannel(query.value(0).toInt(),dBeg,dEnd,this));
+            srcData.push_back(new SrcChannel(plot, query.value(0).toInt(),dBeg,dEnd,this));
             this->layout()->addWidget(srcData.at(srcData.size()-1));
         }
     } else {

@@ -8,16 +8,16 @@ SrcChannel::SrcChannel(Plot *p, int id_ch, int id_owr, bool o, QWidget *parent) 
         updDataPlot(id_ch,id_owr);
 }
 
-SrcChannel::SrcChannel(QString name, QColor cv, QColor cu, QWidget *parent) :
-    QWidget(parent)
+SrcChannel::SrcChannel(Plot *p, QString name, QColor cv, QColor cu, QWidget *parent) :
+    QWidget(parent), plot(p)
 {
     ost=false;
     this->setLayout(new QVBoxLayout(this));
     mkWidget(name,cv,cu);
 }
 
-SrcChannel::SrcChannel(int id_ch, QDateTime dBeg, QDateTime dEnd, QWidget *parent) :
-    QWidget(parent)
+SrcChannel::SrcChannel(Plot *p, int id_ch, QDateTime dBeg, QDateTime dEnd, QWidget *parent) :
+    QWidget(parent), plot(p)
 {
     ost=false;
     this->setLayout(new QVBoxLayout(this));
@@ -97,7 +97,7 @@ bool SrcChannel::createChannel(int id_channel)
 void SrcChannel::updDataPlot(int id_channel, int id_owrab)
 {
     QSqlQuery dataquery;
-    dataquery.prepare("select ust, val, dat_time, pwr from owens_data_new where id_ow_rab= :idowr and id_channel= :idch order by dat_time");
+    dataquery.prepare("select ust, val, dat_time, pwr from owens_data_new where id_ow_rab = :idowr and id_channel= :idch order by dat_time");
     dataquery.bindValue(":idowr", id_owrab);
     dataquery.bindValue(":idch",id_channel);
     if (dataquery.exec() && srcUst && srcVal && srcPwr){
@@ -154,8 +154,8 @@ void SrcChannel::updDataPlot(int id_channel, QDateTime dBeg, QDateTime dEnd)
 {
     QSqlQuery dataquery;
     dataquery.prepare("select ust, val, dat_time, pwr from owens_data_new where dat_time between :d1 and :d2 and id_channel = :idch order by dat_time");
-    dataquery.bindValue(":d1", dBeg.toString("yyyy-MM-dd hh:mm:ss"));
-    dataquery.bindValue(":d2", dEnd.toString("yyyy-MM-dd hh:mm:ss"));
+    dataquery.bindValue(":d1", dBeg);
+    dataquery.bindValue(":d2", dEnd);
     dataquery.bindValue(":idch", id_channel);
     if (dataquery.exec() && srcUst && srcVal && srcPwr){
         int interval=plot->getInterval();

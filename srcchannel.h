@@ -12,8 +12,8 @@ class SrcChannel : public QWidget
     Q_OBJECT
 public:
     SrcChannel(Plot *p, int id_ch, int id_owr, bool o, QWidget *parent = 0);
-    SrcChannel(QString name, QColor cv, QColor cu, QWidget *parent = 0);
-    SrcChannel(int id_ch, QDateTime dBeg, QDateTime dEnd, QWidget *parent = 0);
+    SrcChannel(Plot *p, QString name, QColor cv, QColor cu, QWidget *parent = 0);
+    SrcChannel(Plot *p, int id_ch, QDateTime dBeg, QDateTime dEnd, QWidget *parent = 0);
     ~SrcChannel();
     void addData(double ust, double val, double t);
     void plotData(double xmax);

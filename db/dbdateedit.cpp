@@ -39,3 +39,30 @@ void CustomCalendarWidget::showEvent(QShowEvent *event)
     }
     QCalendarWidget::showEvent(event);
 }
+
+DbDateTimeEdit::DbDateTimeEdit(QWidget *parent) : QDateTimeEdit(parent)
+{
+    this->setDisplayFormat("dd.MM.yyyy hh:mm");
+    this->setSpecialValueText("NULL");
+    connect(this->lineEdit(),SIGNAL(textChanged(QString)),this,SLOT(txtChangeSlot(QString)));
+}
+
+void DbDateTimeEdit::setDateTime(const QDateTime &dateTime)
+{
+    if (dateTime.isNull()){
+        QDateTimeEdit::setDateTime(this->minimumDateTime());
+    }
+    QDateTimeEdit::setDateTime(dateTime);
+}
+
+void DbDateTimeEdit::clear()
+{
+    QDateTimeEdit::setDateTime(this->minimumDateTime());
+}
+
+void DbDateTimeEdit::txtChangeSlot(QString txt)
+{
+    if (txt.isEmpty()){
+        this->setDateTime(this->minimumDateTime());
+    }
+}
