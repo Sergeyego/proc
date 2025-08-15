@@ -22,7 +22,9 @@ SOURCES += \
     db/dbviewer.cpp \
     db/executor.cpp \
     db/tablemodel.cpp \
+    delegate.cpp \
     formgraph.cpp \
+    formoven.cpp \
     main.cpp \
     mainwindow.cpp \
     modelro.cpp \
@@ -36,30 +38,20 @@ SOURCES += \
     plotdata.cpp \
     qwt/qwt.cpp \
     qwt/qwt_abstract_legend.cpp \
-    qwt/qwt_abstract_scale.cpp \
     qwt/qwt_abstract_scale_draw.cpp \
-    qwt/qwt_abstract_slider.cpp \
-    qwt/qwt_analog_clock.cpp \
-    qwt/qwt_arrow_button.cpp \
     qwt/qwt_bezier.cpp \
     qwt/qwt_clipper.cpp \
     qwt/qwt_color_map.cpp \
     qwt/qwt_column_symbol.cpp \
-    qwt/qwt_compass.cpp \
-    qwt/qwt_compass_rose.cpp \
-    qwt/qwt_counter.cpp \
     qwt/qwt_curve_fitter.cpp \
     qwt/qwt_date.cpp \
     qwt/qwt_date_scale_draw.cpp \
     qwt/qwt_date_scale_engine.cpp \
-    qwt/qwt_dial.cpp \
-    qwt/qwt_dial_needle.cpp \
     qwt/qwt_dyngrid_layout.cpp \
     qwt/qwt_event_pattern.cpp \
     qwt/qwt_graphic.cpp \
     qwt/qwt_interval.cpp \
     qwt/qwt_interval_symbol.cpp \
-    qwt/qwt_knob.cpp \
     qwt/qwt_legend.cpp \
     qwt/qwt_legend_data.cpp \
     qwt/qwt_legend_label.cpp \
@@ -112,20 +104,6 @@ SOURCES += \
     qwt/qwt_point_data.cpp \
     qwt/qwt_point_mapper.cpp \
     qwt/qwt_point_polar.cpp \
-    qwt/qwt_polar_canvas.cpp \
-    qwt/qwt_polar_curve.cpp \
-    qwt/qwt_polar_fitter.cpp \
-    qwt/qwt_polar_grid.cpp \
-    qwt/qwt_polar_item.cpp \
-    qwt/qwt_polar_itemdict.cpp \
-    qwt/qwt_polar_layout.cpp \
-    qwt/qwt_polar_magnifier.cpp \
-    qwt/qwt_polar_marker.cpp \
-    qwt/qwt_polar_panner.cpp \
-    qwt/qwt_polar_picker.cpp \
-    qwt/qwt_polar_plot.cpp \
-    qwt/qwt_polar_renderer.cpp \
-    qwt/qwt_polar_spectrogram.cpp \
     qwt/qwt_raster_data.cpp \
     qwt/qwt_round_scale_draw.cpp \
     qwt/qwt_sampling_thread.cpp \
@@ -135,7 +113,6 @@ SOURCES += \
     qwt/qwt_scale_map.cpp \
     qwt/qwt_scale_widget.cpp \
     qwt/qwt_series_data.cpp \
-    qwt/qwt_slider.cpp \
     qwt/qwt_spline.cpp \
     qwt/qwt_spline_basis.cpp \
     qwt/qwt_spline_cubic.cpp \
@@ -149,11 +126,9 @@ SOURCES += \
     qwt/qwt_text.cpp \
     qwt/qwt_text_engine.cpp \
     qwt/qwt_text_label.cpp \
-    qwt/qwt_thermo.cpp \
     qwt/qwt_transform.cpp \
     qwt/qwt_vectorfield_symbol.cpp \
     qwt/qwt_weeding_curve_fitter.cpp \
-    qwt/qwt_wheel.cpp \
     qwt/qwt_widget_overlay.cpp \
     rels.cpp \
     srcchannel.cpp \
@@ -171,7 +146,9 @@ HEADERS += \
     db/dbviewer.h \
     db/executor.h \
     db/tablemodel.h \
+    delegate.h \
     formgraph.h \
+    formoven.h \
     mainwindow.h \
     modelro.h \
     olap/axiswidget.h \
@@ -184,33 +161,23 @@ HEADERS += \
     plotdata.h \
     qwt/qwt.h \
     qwt/qwt_abstract_legend.h \
-    qwt/qwt_abstract_scale.h \
     qwt/qwt_abstract_scale_draw.h \
-    qwt/qwt_abstract_slider.h \
-    qwt/qwt_analog_clock.h \
-    qwt/qwt_arrow_button.h \
     qwt/qwt_axis.h \
     qwt/qwt_axis_id.h \
     qwt/qwt_bezier.h \
     qwt/qwt_clipper.h \
     qwt/qwt_color_map.h \
     qwt/qwt_column_symbol.h \
-    qwt/qwt_compass.h \
-    qwt/qwt_compass_rose.h \
-    qwt/qwt_counter.h \
     qwt/qwt_curve_fitter.h \
     qwt/qwt_date.h \
     qwt/qwt_date_scale_draw.h \
     qwt/qwt_date_scale_engine.h \
-    qwt/qwt_dial.h \
-    qwt/qwt_dial_needle.h \
     qwt/qwt_dyngrid_layout.h \
     qwt/qwt_event_pattern.h \
     qwt/qwt_global.h \
     qwt/qwt_graphic.h \
     qwt/qwt_interval.h \
     qwt/qwt_interval_symbol.h \
-    qwt/qwt_knob.h \
     qwt/qwt_legend.h \
     qwt/qwt_legend_data.h \
     qwt/qwt_legend_label.h \
@@ -262,21 +229,6 @@ HEADERS += \
     qwt/qwt_point_data.h \
     qwt/qwt_point_mapper.h \
     qwt/qwt_point_polar.h \
-    qwt/qwt_polar.h \
-    qwt/qwt_polar_canvas.h \
-    qwt/qwt_polar_curve.h \
-    qwt/qwt_polar_fitter.h \
-    qwt/qwt_polar_grid.h \
-    qwt/qwt_polar_item.h \
-    qwt/qwt_polar_itemdict.h \
-    qwt/qwt_polar_layout.h \
-    qwt/qwt_polar_magnifier.h \
-    qwt/qwt_polar_marker.h \
-    qwt/qwt_polar_panner.h \
-    qwt/qwt_polar_picker.h \
-    qwt/qwt_polar_plot.h \
-    qwt/qwt_polar_renderer.h \
-    qwt/qwt_polar_spectrogram.h \
     qwt/qwt_raster_data.h \
     qwt/qwt_round_scale_draw.h \
     qwt/qwt_samples.h \
@@ -288,7 +240,6 @@ HEADERS += \
     qwt/qwt_scale_widget.h \
     qwt/qwt_series_data.h \
     qwt/qwt_series_store.h \
-    qwt/qwt_slider.h \
     qwt/qwt_spline.h \
     qwt/qwt_spline_basis.h \
     qwt/qwt_spline_cubic.h \
@@ -302,11 +253,9 @@ HEADERS += \
     qwt/qwt_text.h \
     qwt/qwt_text_engine.h \
     qwt/qwt_text_label.h \
-    qwt/qwt_thermo.h \
     qwt/qwt_transform.h \
     qwt/qwt_vectorfield_symbol.h \
     qwt/qwt_weeding_curve_fitter.h \
-    qwt/qwt_wheel.h \
     qwt/qwt_widget_overlay.h \
     rels.h \
     srcchannel.h \
@@ -317,6 +266,7 @@ FORMS += \
     db/dblogin.ui \
     db/dbrelationeditdialog.ui \
     formgraph.ui \
+    formoven.ui \
     mainwindow.ui \
     olap/axiswidget.ui \
     olap/cubewidget.ui \

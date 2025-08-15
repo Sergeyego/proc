@@ -149,7 +149,8 @@ void DbMapper::setItemDelegate(QAbstractItemDelegate *delegate)
 {
     mapper->setItemDelegate(delegate);
     DbDelegate *d = qobject_cast<DbDelegate *>(delegate);
-    if (d){
+    DbViewer *v = qobject_cast<DbViewer *>(viewer);
+    if (d && !v){
         connect(d,SIGNAL(sigActionEdtRel(QModelIndex)),this,SLOT(edtRels(QModelIndex)));
     }
 }

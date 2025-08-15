@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSettings>
 #include "formgraph.h"
+#include "formoven.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -32,5 +33,6 @@ private:
 private slots:
     void closeTab(int index);
     void newFormGraph();
+    void newFormOven();
 };
 #endif // MAINWINDOW_H

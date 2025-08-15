@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     actAction(ui->actionGraph,&MainWindow::newFormGraph);
+    actAction(ui->actionOven,&MainWindow::newFormOven);
     loadSettings();
     connect(ui->tabWidget,SIGNAL(tabCloseRequested(int)),this,SLOT(closeTab(int)));
 }
@@ -106,3 +107,12 @@ void MainWindow::newFormGraph()
         addSubWindow(new FormGraph(),sender());
     }
 }
+
+void MainWindow::newFormOven()
+{
+    if (!exist(sender())){
+        addSubWindow(new FormOven(),sender());
+    }
+}
+
+

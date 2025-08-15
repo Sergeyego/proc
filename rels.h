@@ -13,6 +13,7 @@ public:
     DbSqlRelation *relElDim;
     DbSqlRelation *relRab;
     DbSqlRelation *relProg;
+    DbSqlRelation *relGroup;
 
 protected:
     explicit Rels(QObject *parent = nullptr);

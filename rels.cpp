@@ -19,6 +19,9 @@ Rels::Rels(QObject *parent) : QObject(parent)
     relRab->setSort("snam");
     relProg = new DbSqlRelation("dry_reg","id","nam",this);
     relProg->setSort("nam");
+    relGroup = new DbSqlRelation("owens_groups","id","nam",this);
+    relGroup->setSort("nam");
+    relGroup->setEditable(true);
 }
 
 void Rels::refresh()
@@ -27,4 +30,5 @@ void Rels::refresh()
     relElDim->refreshModel();
     relRab->refreshModel();
     relProg->refreshModel();
+    relGroup->refreshModel();
 }

@@ -45,11 +45,23 @@
     </property>
     <addaction name="actionGraph"/>
    </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>Печи</string>
+    </property>
+    <addaction name="actionOven"/>
+   </widget>
    <addaction name="menu"/>
+   <addaction name="menu_2"/>
   </widget>
   <action name="actionGraph">
    <property name="text">
     <string>Графики температуры</string>
+   </property>
+  </action>
+  <action name="actionOven">
+   <property name="text">
+    <string>Конфигурация печей</string>
    </property>
   </action>
  </widget>
