@@ -8,6 +8,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     actAction(ui->actionGraph,&MainWindow::newFormGraph);
     actAction(ui->actionOven,&MainWindow::newFormOven);
+    actAction(ui->actionDryKvo,&MainWindow::newAnDryKvo);
+    actAction(ui->actionDryEnerg,&MainWindow::newAnDryEnerg);
+    actAction(ui->actionDryMas,&MainWindow::newAnDryMas);
+    actAction(ui->actionDryEnergKg,&MainWindow::newAnDryEnergKg);
     loadSettings();
     connect(ui->tabWidget,SIGNAL(tabCloseRequested(int)),this,SLOT(closeTab(int)));
 }
@@ -112,6 +116,66 @@ void MainWindow::newFormOven()
 {
     if (!exist(sender())){
         addSubWindow(new FormOven(),sender());
+    }
+}
+
+void MainWindow::newAnDryKvo()
+{
+    if (!exist(sender())){
+        addSubWindow(new CubeWidget(8),sender());
+    }
+}
+
+void MainWindow::newAnDryEnerg()
+{
+    if (!exist(sender())){
+        addSubWindow(new CubeWidget(13),sender());
+    }
+}
+
+void MainWindow::newAnDryMas()
+{
+    if (!exist(sender())){
+        addSubWindow(new CubeWidget(11),sender());
+    }
+}
+
+void MainWindow::newAnDryEnergKg()
+{
+    if (!exist(sender())){
+        QStringList axes;
+        axes.push_back(tr("Печь"));
+        axes.push_back(tr("Марка"));
+        axes.push_back(tr("Диаметр"));
+        axes.push_back(tr("Группа"));
+        axes.push_back(tr("Партия"));
+        axes.push_back(tr("Год"));
+        axes.push_back(tr("Месяц"));
+        axes.push_back(tr("День"));
+        QString query1("select o.num, e.marka, d.dim, t.nam, r.n_s, "
+                       "substr(cast(r.dt_beg as char(32)),1,4) as yr, "
+                       "substr(cast(r.dt_beg as char(32)),1,7) as mn, "
+                       "substr(cast(r.dt_beg as char(32)),1,10) as dy, "
+                       "r.energ "
+                       "from owens_rab as r "
+                       "inner join owens as o on r.id_owen=o.id "
+                       "inner join dry_els as d on r.id_eldim=d.ide "
+                       "inner join elrtr as e on d.id_el=e.id "
+                       "inner join el_types as t on e.id_vid=t.id "
+                       "where r.dt_beg between :d1 and :d2");
+        QString query2("select o.num, e.marka, d.dim, t.nam, r.n_s, "
+                       "substr(cast(r.dt_beg as char(32)),1,4) as yr, "
+                       "substr(cast(r.dt_beg as char(32)),1,7) as mn, "
+                       "substr(cast(r.dt_beg as char(32)),1,10) as dy, "
+                       "r.kvo "
+                       "from owens_rab as r "
+                       "inner join owens as o on r.id_owen=o.id "
+                       "inner join dry_els as d on r.id_eldim=d.ide "
+                       "inner join elrtr as e on d.id_el=e.id "
+                       "inner join el_types as t on e.id_vid=t.id "
+                       "where r.dt_beg between :d1 and :d2");
+        DoubleCubeWidget *kgCube = new DoubleCubeWidget(tr("Расход электрической энергии на прокалку, кВт*ч/кг"),axes,query1,query2,3);
+        addSubWindow(kgCube,sender());
     }
 }
 

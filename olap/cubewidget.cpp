@@ -67,6 +67,21 @@ double CubeWidget::getSum()
     return s;
 }
 
+TableView *CubeWidget::getViewer()
+{
+    return ui->tableView;
+}
+
+QDate CubeWidget::getBegDate()
+{
+    return ui->dateEditBeg->date();
+}
+
+QDate CubeWidget::getEndDate()
+{
+    return ui->dateEditEnd->date();
+}
+
 void CubeWidget::inital(QString head, QStringList axes, QString qu, int dec)
 {
     ui = new Ui::CubeWidget;
@@ -101,6 +116,14 @@ void CubeWidget::inital(QString head, QStringList axes, QString qu, int dec)
     olapmodel = new OlapModel(axes,dec,this);
     ui->tableView->setModel(olapmodel);
     updQuery();
+
+    connect(ui->radioButtonSum,SIGNAL(clicked(bool)),this,SIGNAL(sigSum(bool)));
+    connect(ui->radioButtonAvg,SIGNAL(clicked(bool)),this,SIGNAL(sigAvg(bool)));
+    connect(ui->radioButtonMin,SIGNAL(clicked(bool)),this,SIGNAL(sigMin(bool)));
+    connect(ui->radioButtonMax,SIGNAL(clicked(bool)),this,SIGNAL(sigMax(bool)));
+    connect(axisX,SIGNAL(sigUpd(QStringList)),this,SIGNAL(sigUpdX(QStringList)));
+    connect(axisY,SIGNAL(sigUpd(QStringList)),this,SIGNAL(sigUpdY(QStringList)));
+
     connect(ui->cmdUpd,SIGNAL(clicked()),this,SLOT(updQuery()));
     connect(ui->radioButtonSum,SIGNAL(clicked(bool)),olapmodel,SLOT(setTypeSum(bool)));
     connect(ui->radioButtonAvg,SIGNAL(clicked(bool)),olapmodel,SLOT(setTypeAvg(bool)));
@@ -112,6 +135,15 @@ void CubeWidget::inital(QString head, QStringList axes, QString qu, int dec)
     connect(olapmodel,SIGNAL(sigRefresh()),ui->tableView,SLOT(resizeToContents()));
     connect(ui->checkBoxFlt,SIGNAL(clicked(bool)),this,SLOT(fltEnable(bool)));
     connect(ui->cmdCfgFlt,SIGNAL(clicked(bool)),this,SLOT(cfgFlt()));
+}
+
+void CubeWidget::setFiltrable(bool b)
+{
+    if (!b){
+        ui->checkBoxFlt->setChecked(false);
+    }
+    ui->cmdCfgFlt->setVisible(b);
+    ui->checkBoxFlt->setVisible(b);
 }
 
 void CubeWidget::updQuery()

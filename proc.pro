@@ -23,6 +23,8 @@ SOURCES += \
     db/executor.cpp \
     db/tablemodel.cpp \
     delegate.cpp \
+    doublecubewidget.cpp \
+    doubleolapmodel.cpp \
     formgraph.cpp \
     formoven.cpp \
     main.cpp \
@@ -147,6 +149,8 @@ HEADERS += \
     db/executor.h \
     db/tablemodel.h \
     delegate.h \
+    doublecubewidget.h \
+    doubleolapmodel.h \
     formgraph.h \
     formoven.h \
     mainwindow.h \

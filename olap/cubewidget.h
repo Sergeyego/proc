@@ -9,6 +9,7 @@
 #include "dialogolapflt.h"
 #include <QJsonDocument>
 #include <QJsonArray>
+#include "tableview.h"
 
 namespace Ui {
 class CubeWidget;
@@ -25,6 +26,9 @@ public:
     void setRange(QDate beg, QDate end, bool block=true);
     void setSum(double s);
     double getSum();
+    TableView *getViewer();
+    QDate getBegDate();
+    QDate getEndDate();
     
 private:
     void inital(QString head, QStringList axes, QString qu, int dec);
@@ -39,12 +43,25 @@ private:
     QSqlQueryModel *quModel;
     ProxyDataModel *proxyModel;
 
+public slots:
+    void setFiltrable(bool b);
+
+protected slots:
+    virtual void updQuery();
+
 private slots:
-    void updQuery();
     void saveXls();
     void fltEnable(bool b);
     void upd();
     void cfgFlt();
+
+signals:
+    void sigUpdX(QStringList list);
+    void sigUpdY(QStringList list);
+    void sigSum(bool b);
+    void sigAvg(bool b);
+    void sigMin(bool b);
+    void sigMax(bool b);
 };
 
 #endif // CUBEWIDGET_H

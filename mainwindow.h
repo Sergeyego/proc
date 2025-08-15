@@ -5,6 +5,8 @@
 #include <QSettings>
 #include "formgraph.h"
 #include "formoven.h"
+#include "olap/cubewidget.h"
+#include "doublecubewidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -34,5 +36,9 @@ private slots:
     void closeTab(int index);
     void newFormGraph();
     void newFormOven();
+    void newAnDryKvo();
+    void newAnDryEnerg();
+    void newAnDryMas();
+    void newAnDryEnergKg();
 };
 #endif // MAINWINDOW_H

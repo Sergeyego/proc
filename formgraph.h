@@ -49,6 +49,7 @@ private:
     QString secToStr(qint64 sec);
     QString getSensorInfo(int id_owen, QDate date);
     ModelRo *modelOven;
+    void print(QPrinter *p);
 
 private slots:
     void updDry();
@@ -57,6 +58,7 @@ private slots:
     void setCurrentOven(QModelIndex index);
     void updOven();
     void printGraph();
+    void saveGraph();
 };
 
 #endif // FORMGRAPH_H

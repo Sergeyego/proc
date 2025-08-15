@@ -51,8 +51,19 @@
     </property>
     <addaction name="actionOven"/>
    </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>Отчеты</string>
+    </property>
+    <addaction name="actionDryKvo"/>
+    <addaction name="actionDryEnerg"/>
+    <addaction name="actionDryMas"/>
+    <addaction name="separator"/>
+    <addaction name="actionDryEnergKg"/>
+   </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
+   <addaction name="menu_3"/>
   </widget>
   <action name="actionGraph">
    <property name="text">
@@ -62,6 +73,26 @@
   <action name="actionOven">
    <property name="text">
     <string>Конфигурация печей</string>
+   </property>
+  </action>
+  <action name="actionDryKvo">
+   <property name="text">
+    <string>Количество прокалок</string>
+   </property>
+  </action>
+  <action name="actionDryEnerg">
+   <property name="text">
+    <string>Расход энергии</string>
+   </property>
+  </action>
+  <action name="actionDryMas">
+   <property name="text">
+    <string>Прокаленные электроды</string>
+   </property>
+  </action>
+  <action name="actionDryEnergKg">
+   <property name="text">
+    <string>Расход энергии на кг электродов</string>
    </property>
   </action>
  </widget>

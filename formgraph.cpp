@@ -64,6 +64,7 @@ FormGraph::FormGraph(QWidget *parent)
     connect(ui->tableViewOven->selectionModel(),SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),this,SLOT(setCurrentOven(QModelIndex)));
     connect(ui->pushButtonOven,SIGNAL(clicked(bool)),this,SLOT(updOven()));
     connect(ui->pushButtonPrint,SIGNAL(clicked(bool)),this,SLOT(printGraph()));
+    connect(ui->pushButtonPdf,SIGNAL(clicked(bool)),this,SLOT(saveGraph()));
 
     loadSettings();
     updDry();
@@ -124,6 +125,20 @@ QString FormGraph::getSensorInfo(int id_owen, QDate date)
         QMessageBox::critical(this,"Error",query.lastError().text(),QMessageBox::Ok);
     }
     return info;
+}
+
+void FormGraph::print(QPrinter *p)
+{
+    QwtPlotRenderer renderer;
+    renderer.setDiscardFlag( QwtPlotRenderer::DiscardBackground );
+    renderer.setDiscardFlag( QwtPlotRenderer::DiscardCanvasBackground );
+    renderer.setDiscardFlag( QwtPlotRenderer::DiscardCanvasFrame );
+    renderer.setLayoutFlag( QwtPlotRenderer::FrameWithScales );
+    QPainter painter(p);
+    QRectF page = p->pageRect(QPrinter::DevicePixel);
+    int w = page.width()-page.x();
+    QRect rect(page.x(), page.y(), w*0.95, w*1.3);
+    renderer.render(plot,&painter,rect);
 }
 
 void FormGraph::updDry()
@@ -207,20 +222,28 @@ void FormGraph::updOven()
 
 void FormGraph::printGraph()
 {
-    QwtPlotRenderer renderer;
-    renderer.setDiscardFlag( QwtPlotRenderer::DiscardBackground );
-    renderer.setDiscardFlag( QwtPlotRenderer::DiscardCanvasBackground );
-    renderer.setDiscardFlag( QwtPlotRenderer::DiscardCanvasFrame );
-    renderer.setLayoutFlag( QwtPlotRenderer::FrameWithScales );
     QPrinter printer;
     printer.setColorMode(QPrinter::Color);
     QPrintDialog dialog(&printer,this);
     if (dialog.exec()){
-        QPainter painter(&printer);
-        QRectF page = printer.pageRect(QPrinter::DevicePixel);
-        int w = page.width()-page.x();
-        QRect rect(page.x(), page.y(), w*0.95, w*1.3);
-        renderer.render(plot,&painter,rect);
+        print(&printer);
+    }
+}
+
+void FormGraph::saveGraph()
+{
+    QSettings settings("szsm", QApplication::applicationName());
+    QDir dir(settings.value("savePath",QDir::homePath()).toString());
+    QString exportname = QFileDialog::getSaveFileName(this,tr("Сохранить PDF"),dir.path()+"/"+tr("график.pdf"), "*.pdf");
+    if (!exportname.isEmpty()) {
+        QPrinter p;
+        p.setOutputFormat(QPrinter::PdfFormat);
+        p.setOutputFileName(exportname);
+        p.setColorMode(QPrinter::Color);
+        print(&p);
+        QFile file(exportname);
+        QFileInfo info(file);
+        settings.setValue("savePath",info.path());
     }
 }
 

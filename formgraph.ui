@@ -409,6 +409,18 @@
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="pushButtonPdf">
+           <property name="font">
+            <font>
+             <family>.AppleSystemUIFont</family>
+            </font>
+           </property>
+           <property name="text">
+            <string>PDF</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="horizontalSpacer_5">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
