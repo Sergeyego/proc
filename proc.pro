@@ -277,7 +277,8 @@ FORMS += \
     olap/dialogolapflt.ui \
     olap/formfilter.ui
 
-RC_FILE = ico.rc
+win32:RC_FILE = ico.rc
+macx:ICON = ico.icns
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

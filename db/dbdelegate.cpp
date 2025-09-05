@@ -71,7 +71,7 @@ void DbDelegate::setEditorData ( QWidget * editor, const QModelIndex & index ) c
             DbComboBox *combo = qobject_cast<DbComboBox *>(editor);
             if (combo) {
                 if (combo->model()!=sqlModel->sqlRelation(index.column())->model()){
-                    connect(combo,SIGNAL(sigActionEdtRel(QModelIndex)),this,SIGNAL(sigActionEdtRel(QModelIndex)));
+                    connect(combo,SIGNAL(sigActionEdtRel(QModelIndex)),this,SLOT(edtRels(QModelIndex)));
                 }
                 combo->setIndex(index);
                 return;
@@ -101,7 +101,7 @@ void DbDelegate::setEditorData ( QWidget * editor, const QModelIndex & index ) c
                 if (dat.isNull()){
                     dateTimeEdit->setDateTime(dateTimeEdit->minimumDateTime());
                 } else {
-                    if (dat.toDateTime().timeSpec()==Qt::UTC){
+                    if (sqlModel->udtType(index.column())=="timestamp"){
                         dateTimeEdit->setTimeSpec(Qt::UTC);
                     }
                     dateTimeEdit->setDateTime(dat.toDateTime());
@@ -230,4 +230,16 @@ bool DbDelegate::eventFilter(QObject *object, QEvent *event)
         }
     }
     return QItemDelegate::eventFilter(object,event);
+}
+
+void DbDelegate::edtRels(QModelIndex index)
+{
+    DbComboBox *combo = qobject_cast<DbComboBox *>(sender());
+    if (combo){
+        DbRelationEditDialog d(index);
+        if (d.exec()==QDialog::Accepted){
+            colVal c = d.currentData();
+            combo->setCurrentData(c);
+        }
+    }
 }
